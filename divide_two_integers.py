@@ -3,44 +3,49 @@ class Solution:
     # @param {integer} divisor
     # @return {integer}
     def divide(self, dividend, divisor):
-        i = 0
-        sign = 1
-        if dividend >0 and divisor<0:
+        result = 0
+        
+        negative = False
+        if dividend > 0 and divisor < 0:
             divisor = -divisor
-            sign = -1
+            negative = True
         if dividend <0 and divisor>0:
             dividend = -dividend
-            sign = -1
+            negative = True
         if dividend <0 and divisor<0:
             dividend = -dividend
             divisor = -divisor
-        
+            
+        # x2 until it is larger than dividend
         d = divisor
         n = 0
         while d < dividend:
             n += 1
-            d = divisor<<n
-            
+            d = d<<1
+        # if has shifted, shift back once
         if n > 0:
             d = d>>1
-            n = n-1
+            n -= 1
+        print d, n
+        
         while n>0:
-            dividend -= d
+            if dividend>=d:
+                dividend -= d
+                result += 1<<n
             d = d>>1
-            i += 1<<n
             n -= 1
             
         while dividend>=divisor:
             dividend -= divisor
-            i+=1
+            result += 1
         
-        if sign <0:
-            i = -i
-        if i>=(1<<31):
-            i = (1<<31)-1
-        if i<-(1<<31):
-            i = -(1<<31)
+        if negative:
+            result = -result
+        if result>=(1<<31):
+            result = (1<<31)-1
+        if result<-(1<<31):
+            result = -(1<<31)
             
-        
-        return i
-        
+        return result
+
+print Solution().divide(2147483647, 3)
