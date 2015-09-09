@@ -4,30 +4,28 @@ class Solution:
     def numIslands(self, grid):
         if not grid:
             return 0
-        leaders = {}
-        d ={}
+        count = 0
         for i in range(len(grid)):
             for j in range(len(grid[0])):
                 if grid[i][j]=='1':
-                    if i>0 and grid[i-1][j]=='1' and (i-1, j) in d:
-                        d[(i, j)] = d[(i-1,j)]
-                        leaders[d[(i,j)]].append((i, j))
-                    if j>0 and grid[i][j-1]=='1' and (i, j-1) in d:
-                        if (i, j) in d and d[(i,j)]!=d[(i,j-1)]:
-                            # merge
-                            leader1 = d[(i, j)]
-                            leader2 = d[(i,j-1)]
-                            for c in leaders[leader2]:
-                                d[c] = leader1
-                                leaders[leader1].append(c)
-                            del leaders[leader2]
-                        else:
-                            d[(i,j)] = d[(i, j-1)]
-                            leaders[d[(i,j)]].append((i, j))
-                    if (i,j) not in d:
-                        leaders[(i,j)]=[]
-                        d[(i, j)]=(i,j)
-        return len(leaders)
+                   count +=1
+                   self.sink(grid, i, j)
+        return count
+                
+    def sink(self, grid, i, j):
+        if j>0 and grid[i][j-1]=='1':
+            grid[i][j-1]=0
+            self.sink(grid, i, j-1)
+        if j+1<len(grid[0]) and grid[i][j+1]=='1':
+            grid[i][j+1]=0
+            self.sink(grid, i, j+1)
+        if i>0 and grid[i-1][j]=='1':
+            grid[i-1][j]=0
+            self.sink(grid, i-1, j)
+        if i+1<len(grid) and grid[i+1][j]=='1':
+            grid[i+1][j]=0
+            self.sink(grid, i+1, j)
+
 
 g1 = [
 [c for c in "11000"],
