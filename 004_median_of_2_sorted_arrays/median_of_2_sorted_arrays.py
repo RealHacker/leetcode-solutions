@@ -1,57 +1,33 @@
-from bisect import bisect_left
-
 class Solution(object):
-    def findMedianSortedArrays(self, nums1, nums2):
-		"""
-		:type nums1: List[int]
-		:type nums2: List[int]
-		:rtype: float
-		"""
-		isOdd = (len(nums1)+len(nums2))%2==1
-		if isOdd:
-			half = (len(nums1)+len(nums2))//2
+	def findMedianSortedArrays(self, nums1, nums2):
+		if not nums1:
+		    last = nums2
+		elif not nums2:
+		    last = nums1
 		else:
-			half = (len(nums1)+len(nums2))/2
-		a1, a2 = nums1, nums2
-		count = 0
-		rest = half
-		while True:
-			print a1, a2
-			idx1 = rest/2
-			if not a1 or not a2:
-				break
-
-			if idx1 >= len(a1):
-				idx1 = len(a1)-1
-			num = a1[idx1]
-			idx2 = bisect_left(a2, num)
-
-			newcount = idx2+idx1+count
-			if newcount==half:
-				nexts = []
-				if idx1 < len(a1):
-					nexts.append(a1[idx1])
-				if idx2 < len(a2):
-					nexts.append(a2[idx2])
-				next = min(nexts)
-				if isOdd:
-					return next
-				else:
-					firsts = []
-					if idx1 > 0:
-						firsts.append(a1[idx1-1])
-					if idx2 > 0:
-						firsts.append(a2[idx2-1])
-					first = max(firsts)
-					return (first+next)*0.5
-			elif newcount > half:
-				a1, a2 = a2, a1
-			else:
-				count = newcount
-				rest = half - count
-				a1, a2 = a2[idx2:], a1[idx1:]
-		a = a1 if a1 else a2
-		if isOdd:
-			return a[rest]
+			while True:
+			    print nums1, nums2
+			    if len(nums1)<=2 and len(nums2)<=2:break
+			    median1 = nums1[len(nums1)/2]
+			    median2 = nums2[len(nums2)/2]
+			    if len(nums1)<len(nums2):
+			    		half = len(nums1)/2
+			    	else:
+			    		half = len(nums2)/2
+			    if median1<median2:
+			        nums1 = nums1[half:]
+			        nums2 = nums2[:-half]
+			    elif median1>median2:
+			        nums1 = nums1[:-half]
+			        nums2 = nums2[half:]
+			    else:
+			    	if len(nums1)%2 or len(nums2)%2:
+			    		return median1
+			    	else:
+			    		return (median1 + max(nums1[len(nums1)/2-1], nums2[len(nums2)/2-1])) * 0.5
+			last = sorted(nums1+nums2)
+		print last
+		if len(last)%2:
+		    return last[len(last)/2]
 		else:
-			return (a[rest-1]+a[rest])*0.5
+		    return (last[len(last)/2-1]+last[len(last)/2])*0.5
