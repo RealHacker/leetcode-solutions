@@ -47,9 +47,13 @@ class Solution(object):
                     stack.pop()
 
                 stack.append(i)
-
-            print stack
-
+        right = stack[-1]
+        stack.pop()
+        while len(stack)>1:
+            offset = right-stack[-1]
+            maxarea = max(maxarea, heights[stack[-1]]*offset)
+            stack.pop()
+            
         return maxarea
 
                     
