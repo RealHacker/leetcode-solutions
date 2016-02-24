@@ -14,7 +14,6 @@ class Solution:
         for c in s:
             if c in t:
                 self.s += c
-   sel     
         return self.countSubs(0,0)
         
     def countSubs(self, s, t):
