@@ -1,0 +1,24 @@
+class Solution(object):
+    def isValidSerialization(self, preorder):
+        """
+        :type preorder: str
+        :rtype: bool
+        """
+        preorder = preorder.split(",")
+        n, valid = self.isValid(0, preorder)
+        
+        return n==len(preorder) and valid
+        
+    def isValid(self, n, preorder):
+        if n>=len(preorder):
+            return (n, False)
+        if preorder[n]=="#":
+            return (n+1, True)
+        else:
+            n1, valid1 = self.isValid(n+1, preorder)
+
+            if not valid1:
+                return (n, False)
+            n2, valid2 = self.isValid(n1, preorder)
+
+            return (n2, valid2)
