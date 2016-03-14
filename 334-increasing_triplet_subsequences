@@ -1,0 +1,18 @@
+class Solution(object):
+    def increasingTriplet(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: bool
+        """
+        if not nums or len(nums)<3:
+            return False
+        _min, _mid = nums[0], sys.maxint
+        for num in nums[1:]:
+            if num<=_min:
+                _min = num
+            elif num<=_mid:
+                _mid = num
+            else:
+                return True
+                
+        return False
