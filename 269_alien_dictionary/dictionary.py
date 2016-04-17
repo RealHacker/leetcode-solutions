@@ -18,14 +18,37 @@ class Solution(object):
                 if word1[j]!=word2[j]:
                     self.add_to_mat(word1[j], word2[j])
                     break
-                
+        
+        # the alphabet only includes the chars that appear in words        
         alphabet = set()
         for word in words:
-            alphabet.add([c for c in word])
+            for c in word:
+                alphabet.add(c)
         
         # toplogical sort
+        degree_in = {}
+        for char in alphabet:
+            j = ord(char)-ord('a')
+            degree_in[char]=sum([self.matrix[i][j] for i in range(26)])
         
-    
+        result = ""
+        while True:
+            hasZeroDegree=False
+            for c in degree_in:
+                if degree_in[c]==0:
+                    hasZeroDegree = True
+                    degree_in[c]=-1 # skip in the following checks
+                    result += c
+                    for k in range(26):
+                        if self.matrix[ord(c)-ord('a')][k]>0:
+                            degree_in[chr(ord('a')+k)]-=1
+                    # print c
+                    # print degree_in
+            if not hasZeroDegree:
+                if len(result)==len(alphabet):
+                    return result
+                return ""
+            
     def add_to_mat(self, c1, c2):
         i1 = ord(c1)-ord('a')
         i2 = ord(c2)-ord('a')
