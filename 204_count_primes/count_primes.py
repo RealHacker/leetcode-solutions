@@ -13,7 +13,6 @@ class Solution(object):
         while i*i<=n:
             if not seive[i]:
                 i+=1
-                continue
             else:
                 j = i
                 while i*j<n:
